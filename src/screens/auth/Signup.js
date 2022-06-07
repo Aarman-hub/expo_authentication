@@ -16,13 +16,13 @@ const {primary} = colors;
 
 
 
-const Login = () => {
+const Signup = ({}) => {
 
 
   const [message, setMessage] = useState('');
   const [isSuccessMessage, setIsSuccessMessage] = useState(false);
 
-  const handleLogin = async (credentials, setSubmitting) =>{
+  const handleSignup = async (credentials, setSubmitting) =>{
     try {
       
       setSubmitting(false);
@@ -36,12 +36,15 @@ const Login = () => {
     <MainContainer>
         <KeyboardAvoidingContainer>
           <RegularText>Textsssss</RegularText>
-          <Formik initialValues={{email:'', password:''}} handleSubmit={(values,{setSubmitting})=>{
-            if(values.email == "" || values.password == ""){
+          <Formik initialValues={{email:'', username:'', password:'', confirmPassword:''}} handleSubmit={(values,{setSubmitting})=>{
+            if(values.email == "", values.username = "" || values.password == "", values.confirmPassword == ""){
               setMessage('Please fill in all fields');
               setSubmitting(false);
+            } else if(values.password !== values.confirmPassword){
+                setMessage('Password not match!');
+                setSubmitting(false);
             }else{
-              handleLogin(values, setSubmitting);
+              handleSignup(values, setSubmitting);
             }
           }}>
             {({handleChange, handleBlur, handleSubmit, values, isSubmitting})=>(
@@ -55,7 +58,16 @@ const Login = () => {
                   onBlur={handleBlur('email')} 
                   values={values.email} 
                   style={{marginBottom:25}} 
-                   />
+                />
+                <StyledText 
+                    label="Username" 
+                    icon="account" 
+                    placeholder="Username" 
+                    onChangeText={handleChange('username')} 
+                    onBlur={handleBlur('username')} 
+                    values={values.username} 
+                    style={{marginBottom:25}} 
+                />
                 <StyledText 
                   label="Password" 
                   icon="lock-open" 
@@ -66,12 +78,21 @@ const Login = () => {
                   isPassword={true} 
                   style={{marginBottom:25}} 
                 />
+                <StyledText 
+                  label="Confirm Password" 
+                  icon="lock-open" 
+                  placeholder="Confirm Passowrd"  
+                  onChangeText={handleChange('confirmpassword')} 
+                  onBlur={handleBlur('confirmpassword')} 
+                  values={values.confirmpassword}
+                  isPassword={true} 
+                  style={{marginBottom:25}} 
+                />
                 <MsgBox style={{marginBottom: 25}} success={isSuccessMessage} >{message || ''}</MsgBox>
-                {!isSubmitting && <RegularButton onPress={handleSubmit}>Login</RegularButton>}
-                {isSubmitting && <RegularButton disable={true}><ActivityIndicator size={small} color={primary} /></RegularButton>}
+                {!isSubmitting && <RegularButton onPress={handleSubmit}>Sign Up</RegularButton>}
+                {isSubmitting && <RegularButton disable={true}><ActivityIndicator size={24} color={primary} /></RegularButton>}
                 <RowContainer>
-                  <PressableText onPress={()=>{}}>Need New account? Click here </PressableText>
-                  <PressableText onPress={()=>{}}>Forgot Password</PressableText>
+                  <PressableText onPress={()=>{}}>Have an account? Login here </PressableText>
                 </RowContainer>
               </>
             )}
@@ -81,4 +102,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Signup
